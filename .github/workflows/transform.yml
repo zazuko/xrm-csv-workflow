@@ -1,0 +1,15 @@
+name: Transform
+
+on: [push, pull_request]
+
+jobs:
+  transform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: ./install.sh
+      - run: ./convert.sh
+      - uses: actions/upload-artifact@v2
+        with:
+          name: transformed.nt
+          path: output/transformed.nt

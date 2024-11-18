@@ -1,0 +1,5 @@
+output/
+.env
+.project
+bin
+xrm-csv-workflow.duckdb
