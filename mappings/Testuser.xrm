@@ -1,6 +1,6 @@
 output r2rml
 
-map User from Testuser {
+map User from synthetic_testuser {
 	subject template "http://example.com/User/{0}" with customerID;
 
 	types
@@ -14,11 +14,11 @@ map User from Testuser {
 		vocab.customerLtv from customerLTV;
 		vocab.sentimentScore from sentimentScore;
 		vocab.propensityScore from propensityScore;
-		schema.givenName from name;
-		schema.familyName from lastname;
+		schema.givenName from Nr;
+		schema.familyName from Last_name;
 		schema.birthDate from dob;
 		schema.address template "http://example.com/User/{0}#address" with customerID;
 		schema.telephone from TelephoneNumber;
 		schema.telephone from CellphoneNumber;
-		schema.email from email;
+		schema.email from E_Mail;
 }

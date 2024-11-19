@@ -1,6 +1,6 @@
 output r2rml
 
-map UserAddress from Testuser {
+map UserAddress from synthetic_testuser {
 	subject template "http://example.com/User/{0}#address" with customerID;
 
 	types
@@ -8,7 +8,7 @@ map UserAddress from Testuser {
 
 	properties
 		schema.addressLocality from City;
-		schema.postalCode from postalCode;
+		schema.postalCode from Postal_Code;
 		schema.streetAddress from Street;
 		rdfs.seeAlso template "http://www.wikidata.org/entity/{0}" with WikidataID;
 }

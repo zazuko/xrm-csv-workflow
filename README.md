@@ -7,12 +7,8 @@ This repository provides a performant way to convert CSV files to RDF. It contai
 - A script that converts the input CSV to RDF
 - A default GitHub Action configuration that runs the script and creates an artifact for download
 
-This is a GitHub template repository. It will not be declared as "fork" once you click on the `Use this template` button above. Simply do that, start adding your data sources and adjust the XRM mapping accordingly:
+This is a GitHub template repository. It will not be declared as "fork" once you click on the `Use this template` button above. Simply do that, start adding your data sources and adjust the XRM mapping accordingly.
 
-1. Create/adjust the XRM files in the `mappings` directory.
-2. Copy source CSVs to `input` directory.
-3. Edit `load-csv.sql` to define tables for CSV files.
-3. Execute the install and convert scripts to convert your data.
 
 Make sure to commit the `input`, `mappings` and `src-gen` directories if you want to build it using GitHub Actions.
 
@@ -25,24 +21,28 @@ Download DuckDB CLI, DuckDB JDBC Driver, Ontop CLI - and unpack into *bin* folde
 ```
 $ ./install.sh
 ```
+
 ## Steps
-
-The `./convert.sh` script includes the following steps:
-
-Build DB:
+1. Copy source CSVs to `input` directory.
+2. Edit `load-csv.sql` to define tables for CSV files.
+3. Create the DuckDB database `xrm-csv-workflow.duckdb` from CSV files:
 ```
 $ ./bin/duckdb/duckdb xrm-csv-workflow.duckdb < load-csv.sql
 ```
-
-Aggregate individual mapping files into a single one - `mappings.nt`:
+3. Generate `Sources.xrm` in the `mappings` directory:
+```
+ /bin/python3 ./sources.py
+```
+4. Create/adjust the XRM files in the `mappings` directory.
+5. Aggregate individual mapping files into a single one - `mappings.nt`:
 ```
 $ docker run --rm -it -v $(pwd):/app zazukoians/node-java-jena:v5 ./aggregate-mapping-files.sh
 ```
 
-Materialize with ontop:
+6. Materialize `transformed.nt` in the `output` directory using Ontop:
 
 ```
-$ ./bin/ontop/ontop materialize -f ntriples -o ./output/mapped.nt -p xrm-csv-workflow.properties -m mappings.nt
+$ ./bin/ontop/ontop materialize -f ntriples -o ./output/transformed.nt -p xrm-csv-workflow.properties -m mappings.nt
 ```
 
 
