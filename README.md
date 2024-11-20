@@ -61,4 +61,10 @@ We provide additional template repositories:
 
 ## Further reading
 
-* [Expressive RDF Mapping Language (XRM)](https://zazuko.com/products/expressive-rdf-mapper/) and the [documentation](https://github.com/zazuko/expressive-rdf-mapper) for details about the domain-specific language (DSL).
+* [DuckDB](https://duckdb.org/) for creating relational databases from CSV files.
+* [RDB to RDF Mapping Language (R2RML)](https://www.w3.org/TR/r2rml/) for expressing customized mappings from relational databases to RDF datasets.
+* [Expressive RDF Mapping Language (XRM)](https://github.com/zazuko/expressive-rdf-mapper) for creating R2RML mappings with a user-friendly domain-specific language (DSL).
+
+
+* [Ontop](https://github.com/ontop/ontop) for exposing the content of arbitrary relational databases as knowledge graphs, relying on R2RML mappings.
+
