@@ -3,7 +3,7 @@
 This repository provides a performant way to convert CSV files to RDF. It contains:
 
 - A sample CSV file
-- A sample XRM mapping that generates R2RML mapping files
+- A corresponding XRM mapping that generates R2RML mapping files
 - A script that converts the input CSV to RDF
 - A default GitHub Action configuration that runs the script and creates an artifact for download
 
@@ -22,28 +22,35 @@ Download DuckDB CLI, DuckDB JDBC Driver, Ontop CLI - and unpack into *bin* folde
 $ ./install.sh
 ```
 
-## Steps
-1. Copy source CSVs to `input` directory.
-2. Edit `load-csv.sql` to define tables for CSV files.
+Try converting the example CSV
+
+```
+$ ./convert.sh
+```
+
+
+## Customize
+1. Replace the example CSV in the `input` directory with your CSV file(s).
+2. Edit `load-csv.sql` to define tables for your CSV files.
 3. Create the DuckDB database `xrm-csv-workflow.duckdb` from CSV files:
 ```
-$ ./bin/duckdb/duckdb xrm-csv-workflow.duckdb < load-csv.sql
+$ npm run db:create
 ```
-3. Generate `Sources.xrm` in the `mappings` directory:
+3. Generate new XRM files in the `mappings` directory:
 ```
- /bin/python3 ./sources.py
+$ npm run xrm:bootstrap
 ```
 4. Create/adjust the XRM files in the `mappings` directory.
-5. Aggregate individual mapping files into a single one - `mappings.nt`:
-```
-$ docker run --rm -it -v $(pwd):/app zazukoians/node-java-jena:v5 ./aggregate-mapping-files.sh
-```
 
-6. Materialize `transformed.nt` in the `output` directory using Ontop:
+5. Materialize `transformed.nt` in the `output` directory:
 
 ```
-$ ./bin/ontop/ontop materialize -f ntriples -o ./output/transformed.nt -p xrm-csv-workflow.properties -m mappings.nt
+$ npm run rdf:create
 ```
+
+## Develop
+Each time you change the CSV files or the corresponding definitions (in `load-csv.sql`), you need to recreate the DuckDB database (with `npm run db:create`) and refresh the XRM sources (with `npm run xrm:sources`). 
+XRM will warn you about any source field used in the mappings that is no more available.
 
 
 ## Hints

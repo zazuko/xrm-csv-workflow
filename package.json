@@ -1,0 +1,20 @@
+{
+  "name": "xrm-csv-workflow",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "This repository provides a performant way to convert CSV files to RDF.",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "db:create": "./bin/duckdb/duckdb xrm-csv-workflow.duckdb < load-csv.sql",
+    "xrm:bootstrap": "node lib/duck2xrm.js xrm-csv-workflow.duckdb -s mappings/sources.xrm -v mappings/vocabularies.xrm -m mappings/mappings.xrm",
+    "xrm:sources": "node lib/duck2xrm.js xrm-csv-workflow.duckdb -s mappings/sources.xrm",
+    "rdf:create": "mkdir -p target & ./bin/ontop/ontop materialize -f ntriples -o ./output/transformed.nt -p xrm-csv-workflow.properties -m src-gen/mappings.r2rml.ttl"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@duckdb/node-api": "^1.3.1-alpha.23"
+  }
+}

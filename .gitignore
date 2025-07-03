@@ -3,3 +3,4 @@ output/
 .project
 bin
 xrm-csv-workflow.duckdb
+node_modules
