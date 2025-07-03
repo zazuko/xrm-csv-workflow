@@ -4,8 +4,10 @@ vocabulary xrm_csv_workflow {
 	prefix "xrm_csv_workflow" "http://example.com/xrm_csv_workflow#"
 
 	classes
-		people
-		employee
+		People
+		Employee
+		Manager
+		Department
 
 	properties
 		seq_id

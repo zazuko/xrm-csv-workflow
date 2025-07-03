@@ -10,3 +10,6 @@ drop sequence seq_id;
 
 create or replace view employee as
 SELECT ssn, dept, manager FROM people WHERE dept IS NOT NULL;
+
+create or replace view department as
+SELECT DISTINCT dept, manager FROM people WHERE dept IS NOT NULL;

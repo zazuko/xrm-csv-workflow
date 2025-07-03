@@ -3,11 +3,12 @@
 output r2rml
 
 template peopleIRI "http://example.com/people/{0}"
+template departmentIRI "http://example.com/department/{0}"
 
 map people from xrm_csv_workflow.people {
 	subject template peopleIRI with ssn;
 
-	types xrm_csv_workflow.people
+	types xrm_csv_workflow.People
 
 	properties
 		xrm_csv_workflow.seq_id from seq_id;
@@ -20,9 +21,23 @@ map people from xrm_csv_workflow.people {
 map employee from xrm_csv_workflow.employee {
 	subject template peopleIRI with ssn;
 
-	types xrm_csv_workflow.employee
+	types xrm_csv_workflow.Employee
 
 	properties
-		xrm_csv_workflow.dept from dept;
-		xrm_csv_workflow.manager from manager;
+		xrm_csv_workflow.dept template departmentIRI with dept;
 	}
+
+map department from xrm_csv_workflow.department {
+	subject template departmentIRI with dept;
+
+	types xrm_csv_workflow.Department
+
+	properties
+		xrm_csv_workflow.manager template peopleIRI with manager;
+	}
+
+map manager from xrm_csv_workflow.department {
+	subject template peopleIRI with manager;
+
+	types xrm_csv_workflow.Manager
+}

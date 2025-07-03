@@ -8,7 +8,7 @@ PREFIX xrm_csv_workflow: <http://example.com/xrm_csv_workflow#>
 	
 	rr:subjectMap [
 		rr:template "http://example.com/people/{ssn}";
-		rr:class xrm_csv_workflow:people
+		rr:class xrm_csv_workflow:People
 	];
 	
 	rr:predicateObjectMap [
@@ -53,20 +53,40 @@ PREFIX xrm_csv_workflow: <http://example.com/xrm_csv_workflow#>
 	
 	rr:subjectMap [
 		rr:template "http://example.com/people/{ssn}";
-		rr:class xrm_csv_workflow:employee
+		rr:class xrm_csv_workflow:Employee
 	];
 	
 	rr:predicateObjectMap [
 		rr:predicate xrm_csv_workflow:dept;
 		rr:objectMap [
-			rr:column "dept"
+			rr:template "http://example.com/department/{dept}"
 		]
+	].
+	
+<#department>
+	a rr:TriplesMap;
+	
+	rr:logicalTable [ rr:tableName "department" ];
+	
+	rr:subjectMap [
+		rr:template "http://example.com/department/{dept}";
+		rr:class xrm_csv_workflow:Department
 	];
 	
 	rr:predicateObjectMap [
 		rr:predicate xrm_csv_workflow:manager;
 		rr:objectMap [
-			rr:column "manager"
+			rr:template "http://example.com/people/{manager}"
 		]
+	].
+	
+<#manager>
+	a rr:TriplesMap;
+	
+	rr:logicalTable [ rr:tableName "department" ];
+	
+	rr:subjectMap [
+		rr:template "http://example.com/people/{manager}";
+		rr:class xrm_csv_workflow:Manager
 	].
 	
