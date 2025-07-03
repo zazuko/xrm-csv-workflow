@@ -2,6 +2,15 @@
 source-group xrm_csv_workflow {
 type rdb
 
+    logical-source employee {
+        source "employee"
+
+        referenceables
+        ssn
+		dept
+		manager
+    }
+
     logical-source people {
         source "people"
 

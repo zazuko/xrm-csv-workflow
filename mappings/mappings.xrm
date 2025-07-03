@@ -2,9 +2,10 @@
 
 output r2rml
 
+template peopleIRI "http://example.com/people/{0}"
+
 map people from xrm_csv_workflow.people {
-	// TODO: use proper key fields in the template
-	subject template "http://example.com/people/{0}" with seq_id;
+	subject template peopleIRI with ssn;
 
 	types xrm_csv_workflow.people
 
@@ -14,7 +15,14 @@ map people from xrm_csv_workflow.people {
 		xrm_csv_workflow.name from name;
 		xrm_csv_workflow.phone from phone;
 		xrm_csv_workflow.email from email;
+	}
+
+map employee from xrm_csv_workflow.employee {
+	subject template peopleIRI with ssn;
+
+	types xrm_csv_workflow.employee
+
+	properties
 		xrm_csv_workflow.dept from dept;
 		xrm_csv_workflow.manager from manager;
 	}
-

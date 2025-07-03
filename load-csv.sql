@@ -8,3 +8,5 @@ create or replace table people as (select * from temp_view);
 drop view temp_view;
 drop sequence seq_id;
 
+create or replace view employee as
+SELECT ssn, dept, manager FROM people WHERE dept IS NOT NULL;

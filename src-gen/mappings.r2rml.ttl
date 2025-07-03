@@ -7,7 +7,7 @@ PREFIX xrm_csv_workflow: <http://example.com/xrm_csv_workflow#>
 	rr:logicalTable [ rr:tableName "people" ];
 	
 	rr:subjectMap [
-		rr:template "http://example.com/people/{seq_id}";
+		rr:template "http://example.com/people/{ssn}";
 		rr:class xrm_csv_workflow:people
 	];
 	
@@ -44,6 +44,16 @@ PREFIX xrm_csv_workflow: <http://example.com/xrm_csv_workflow#>
 		rr:objectMap [
 			rr:column "email"
 		]
+	].
+	
+<#employee>
+	a rr:TriplesMap;
+	
+	rr:logicalTable [ rr:tableName "employee" ];
+	
+	rr:subjectMap [
+		rr:template "http://example.com/people/{ssn}";
+		rr:class xrm_csv_workflow:employee
 	];
 	
 	rr:predicateObjectMap [

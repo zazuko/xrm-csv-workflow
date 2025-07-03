@@ -5,6 +5,7 @@ vocabulary xrm_csv_workflow {
 
 	classes
 		people
+		employee
 
 	properties
 		seq_id
