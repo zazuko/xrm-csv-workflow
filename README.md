@@ -55,8 +55,8 @@ XRM will warn you about any source field used in the mappings that is no more av
 
 ## Hints
 
-* DuckDB versions 1.1.x did not work. DuckDB version 1.0.0 is working OK. See also https://github.com/ontop/ontop/issues/828
 * Table names in DuckDB need to be lowercase, otherwise `ontop materialize` throws exceptions
+* Override binary paths via env vars: `DUCKDB_BIN` and `ONTOP_BIN` (default to `./bin/duckdb/duckdb` and `./bin/ontop/ontop`)
 
 ## Other template repositories
 

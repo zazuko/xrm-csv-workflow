@@ -6,7 +6,8 @@ jobs:
   transform:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - run: chmod +x install.sh convert.sh
       - run: ./install.sh
       - run: ./convert.sh
       - uses: actions/upload-artifact@v4
