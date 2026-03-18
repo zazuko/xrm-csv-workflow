@@ -40,6 +40,7 @@ $ npm run db:create
 ```
 $ npm run xrm:bootstrap
 ```
+> `xrm:bootstrap` generates a scaffold based on your DB schema. It picks the first column of each table as the subject URI key — review and adjust the generated mappings before using them.
 4. Create/adjust the XRM files in the `mappings` directory.
 
 5. Materialize `transformed.nt` in the `output` directory:
