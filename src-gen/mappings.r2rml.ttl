@@ -1,0 +1,92 @@
+PREFIX rr: <http://www.w3.org/ns/r2rml#>
+PREFIX xrm_csv_workflow: <http://example.com/xrm_csv_workflow#>
+
+<#people>
+	a rr:TriplesMap;
+	
+	rr:logicalTable [ rr:tableName "people" ];
+	
+	rr:subjectMap [
+		rr:template "http://example.com/people/{ssn}";
+		rr:class xrm_csv_workflow:People
+	];
+	
+	rr:predicateObjectMap [
+		rr:predicate xrm_csv_workflow:seq_id;
+		rr:objectMap [
+			rr:column "seq_id"
+		]
+	];
+	
+	rr:predicateObjectMap [
+		rr:predicate xrm_csv_workflow:ssn;
+		rr:objectMap [
+			rr:column "ssn"
+		]
+	];
+	
+	rr:predicateObjectMap [
+		rr:predicate xrm_csv_workflow:name;
+		rr:objectMap [
+			rr:column "name"
+		]
+	];
+	
+	rr:predicateObjectMap [
+		rr:predicate xrm_csv_workflow:phone;
+		rr:objectMap [
+			rr:column "phone"
+		]
+	];
+	
+	rr:predicateObjectMap [
+		rr:predicate xrm_csv_workflow:email;
+		rr:objectMap [
+			rr:column "email"
+		]
+	].
+	
+<#employee>
+	a rr:TriplesMap;
+	
+	rr:logicalTable [ rr:tableName "employee" ];
+	
+	rr:subjectMap [
+		rr:template "http://example.com/people/{ssn}";
+		rr:class xrm_csv_workflow:Employee
+	];
+	
+	rr:predicateObjectMap [
+		rr:predicate xrm_csv_workflow:dept;
+		rr:objectMap [
+			rr:template "http://example.com/department/{dept}"
+		]
+	].
+	
+<#department>
+	a rr:TriplesMap;
+	
+	rr:logicalTable [ rr:tableName "department" ];
+	
+	rr:subjectMap [
+		rr:template "http://example.com/department/{dept}";
+		rr:class xrm_csv_workflow:Department
+	];
+	
+	rr:predicateObjectMap [
+		rr:predicate xrm_csv_workflow:manager;
+		rr:objectMap [
+			rr:template "http://example.com/people/{manager}"
+		]
+	].
+	
+<#manager>
+	a rr:TriplesMap;
+	
+	rr:logicalTable [ rr:tableName "department" ];
+	
+	rr:subjectMap [
+		rr:template "http://example.com/people/{manager}";
+		rr:class xrm_csv_workflow:Manager
+	].
+	

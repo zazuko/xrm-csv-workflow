@@ -1,0 +1,8 @@
+ssn,name,phone,email,dept,manager
+ssn1,John,1234,john@company.com,,
+ssn2,Mary,2345,mary@company.com,D1,ssn3
+ssn2,Mary,3456,mary@company.com,D1,ssn3
+ssn2,Mary,2345,mary@gmail.com,D1,ssn3
+ssn2,Mary,3456,mary@gmail.com,D1,ssn3
+ssn3,Sue,4567,sue@company.com,D1,ssn3
+ssn4,Paul,5678,paul@company.com,D2,ssn4
