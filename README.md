@@ -65,7 +65,6 @@ We provide additional template repositories:
 
 * [xrm-csvw-workflow](https://github.com/zazuko/xrm-csvw-workflow):  A template repository for converting CSV to RDF using barnard59 pipelines and the CSVW specification.
 * [xrm-r2rml-workflow](https://github.com/zazuko/xrm-r2rml-workflow):  A template repository for converting complete relational databases to RDF using the R2RML specification and Ontop as mapper.
-* xrm-xml-workflow: TODO
 
 ## Further reading
 
