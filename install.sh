@@ -31,6 +31,9 @@ curl -L $DUCKDB_ZIPFILE_URL -o duckdb_cli.zip
 unzip -o duckdb_cli.zip -d bin/duckdb
 rm duckdb_cli.zip
 
+if [ -d bin/ontop ]; then
+  rm -rf bin/ontop
+fi
 mkdir -p bin/ontop
 curl -L $ONTOP_ZIPFILE_URL -o ontop_cli.zip
 unzip -o ontop_cli.zip -d bin/ontop
