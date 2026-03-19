@@ -1,3 +1,14 @@
+-- This SQL script loads data from CSV into a DuckDB database.
+
+-- You should adapt it to your own CSV file(s) and can be as simple as:
+
+-- CREATE TABLE my_table AS
+--    SELECT * FROM read_csv('input/my_file.csv');
+
+-- here, we additionally include a trick to add row numbers,
+-- as well as views to partition the data, providing multiple
+-- logical sources (see sources.xrm) to facilitate the mapping.
+
 create sequence seq_id start 1;
 
 create or replace view temp_view as SELECT nextval('seq_id') as seq_id, *
