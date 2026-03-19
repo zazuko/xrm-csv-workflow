@@ -1,6 +1,6 @@
 output/
 .env
 .project
-bin
+bin/
 xrm-csv-workflow.duckdb
-node_modules
+node_modules/
