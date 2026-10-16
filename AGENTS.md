@@ -11,6 +11,7 @@ input/*.csv ──(DuckDB, load-csv.sql)──> xrm-csv-workflow.duckdb
             ──(lib/duck2xrm.js)───────> mappings/sources.xrm      (table/column list)
 mappings/*.xrm ──(xrm-cli generate)───> src-gen/mappings.r2rml.ttl (R2RML)
 duckdb + R2RML ──(Ontop materialize)──> output/transformed.nt
+output/transformed.nt ──(rvv, optional)──> vocabulary check
 ```
 
 Mappings are written in XRM, a DSL that compiles to R2RML. Ontop reads the DuckDB file via JDBC and materializes the RDF.
@@ -19,7 +20,7 @@ Mappings are written in XRM, a DSL that compiles to R2RML. Ontop reads the DuckD
 
 ```sh
 ./install.sh            # download DuckDB CLI, DuckDB JDBC, Ontop, xrm-cli into bin/ (needs Java 11+, curl, unzip)
-./convert.sh            # full pipeline: npm install, db:create, xrm:sources, xrm:generate, rdf:create
+./convert.sh            # full pipeline: npm install, db:create, xrm:sources, xrm:generate, rdf:create, rdf:validate
 ```
 
 Individual steps (run from the repo root):
@@ -30,9 +31,10 @@ Individual steps (run from the repo root):
 | `npm run xrm:sources` | Regenerates `mappings/sources.xrm` from the database schema |
 | `npm run xrm:generate` | Validates all `mappings/*.xrm` and writes `src-gen/` |
 | `npm run rdf:create` | Ontop materializes `output/transformed.nt` |
+| `npm run rdf:validate` | Checks class/property IRIs in the output against known vocabularies with `rvv`; skipped if `rvv` is not installed |
 | `npm run xrm:bootstrap` | **Overwrites** `sources.xrm`, `vocabularies.xrm` and `mappings.xrm` with a scaffold. Only for starting a new project; never run it on existing hand-written mappings |
 
-Binary paths can be overridden with `DUCKDB_BIN`, `ONTOP_BIN` and `XRM_CLI_JAR`; they default to `./bin/...`.
+Binary paths can be overridden with `DUCKDB_BIN`, `ONTOP_BIN` and `XRM_CLI_JAR` (default `./bin/...`), and `RVV_BIN` (default `rvv` on the `PATH`).
 
 `db:create` can be rerun: tables and views are created with `create or replace`. Tables or views you remove from `load-csv.sql` stay in the database file, though, and would still show up in `sources.xrm`. Delete `xrm-csv-workflow.duckdb` for a clean rebuild.
 
@@ -96,6 +98,12 @@ map employee from xrm_csv_workflow.employee {
 - When many "Couldn't resolve reference" errors appear, look for a syntax error in another `.xrm` file first (for example in `vocabularies.xrm`). It is often listed last.
 - All scripts use `set -eu`, so `convert.sh` stops at the first failing step.
 - To check the RDF output: `riot --validate --strict output/transformed.nt` (Apache Jena) or `rapper -i ntriples -c output/transformed.nt`.
+- Vocabulary check with `rvv` (`npm run rdf:validate`, https://github.com/ktk/vocab-validator):
+  - ❌ **Invalid terms** (exit `1`): the namespace is known but the term doesn't exist, e.g. `http://schema.org/naem`. Fix the property or class in `vocabularies.xrm`/`mappings.xrm`.
+  - 💡 **Unknown vocabularies** (exit `0`): namespaces `rvv` has no data for, such as this template's `example.com` vocabulary. Expected for custom vocabularies.
+  - ⚠️ **HTTPS schema.org** (exit `0`): use `http://schema.org/`, not `https://`.
+  - If `rvv` warns that the vocabulary cache is missing, run `rvv update-vocabs`; without the cache every term is "unknown" and invalid terms go unnoticed.
+  - Only run it on the N-Triples output. It can't parse `src-gen/*.r2rml.ttl`, which uses relative IRIs like `<#people>`.
 - To check that a change does not alter the output, compare sorted N-Triples before and after: `sort output/transformed.nt > /tmp/before.nt`, make the change, rebuild, then `sort output/transformed.nt | diff - /tmp/before.nt`.
 
 ## Gotchas

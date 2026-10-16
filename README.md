@@ -54,6 +54,11 @@ $ npm run xrm:generate
 ```
 $ npm run rdf:create
 ```
+8. Optionally check the classes and properties used in the output against well-known vocabularies (schema.org, FOAF, RDFS, …) with [rvv](https://github.com/ktk/vocab-validator). The step is skipped if `rvv` is not installed:
+```
+$ npm run rdf:validate
+```
+> Typos in known vocabularies (e.g. `schema:naem`) fail the step; terms from vocabularies `rvv` doesn't know, like the `example.com` one in this template, are only listed. Run `rvv update-vocabs` once after installing, otherwise every term is reported as unknown and nothing fails.
 
 ## Develop
 Each time you change the CSV files or the corresponding definitions (in `load-csv.sql`), you need to recreate the DuckDB database (with `npm run db:create`) and refresh the XRM sources (with `npm run xrm:sources`). After changing XRM files, regenerate the R2RML mapping with `npm run xrm:generate`; `./convert.sh` runs all of these steps.
@@ -63,7 +68,7 @@ XRM will warn you about any source field used in the mappings that is no more av
 ## Hints
 
 * Table names in DuckDB need to be lowercase, otherwise `ontop materialize` throws exceptions
-* Override binary paths via env vars: `DUCKDB_BIN`, `ONTOP_BIN` and `XRM_CLI_JAR` (default to `./bin/duckdb/duckdb`, `./bin/ontop/ontop` and `./bin/xrm/xrm-cli.jar`)
+* Override binary paths via env vars: `DUCKDB_BIN`, `ONTOP_BIN` and `XRM_CLI_JAR` (default to `./bin/duckdb/duckdb`, `./bin/ontop/ontop` and `./bin/xrm/xrm-cli.jar`), and `RVV_BIN` (default: `rvv` on the `PATH`)
 * Tool versions are pinned at the top of `install.sh`; the CI cache for `bin/` is invalidated whenever that file or the published XRM CLI jar changes
 
 ## Other template repositories
