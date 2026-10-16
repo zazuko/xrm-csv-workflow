@@ -36,14 +36,13 @@ $ ./convert.sh
 ```
 $ npm run db:create
 ```
-3. Generate new XRM files in the `mappings` directory:
+4. Generate new XRM files in the `mappings` directory:
 ```
 $ npm run xrm:bootstrap
 ```
 > `xrm:bootstrap` generates a scaffold based on your DB schema. It picks the first column of each table as the subject URI key — review and adjust the generated mappings before using them.
-4. Create/adjust the XRM files in the `mappings` directory.
-
-5. Materialize `transformed.nt` in the `output` directory:
+5. Create/adjust the XRM files in the `mappings` directory.
+6. Materialize `transformed.nt` in the `output` directory:
 
 ```
 $ npm run rdf:create
@@ -57,7 +56,8 @@ XRM will warn you about any source field used in the mappings that is no more av
 ## Hints
 
 * Table names in DuckDB need to be lowercase, otherwise `ontop materialize` throws exceptions
-* Override binary paths via env vars: `DUCKDB_BIN` and `ONTOP_BIN` (default to `./bin/duckdb/duckdb` and `./bin/ontop/ontop`)
+* Override binary paths via env vars: `DUCKDB_BIN` and `ONTOP_BIN` (default to `./bin/duckdb/duckdb` and `./bin/ontop/ontop`, both in `convert.sh` and the npm scripts)
+* Tool versions are pinned at the top of `install.sh`; the CI cache for `bin/` is invalidated whenever that file changes
 
 ## Other template repositories
 

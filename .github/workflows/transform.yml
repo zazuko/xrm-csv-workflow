@@ -5,14 +5,17 @@ on: [push, pull_request]
 jobs:
   transform:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
-      - uses: actions/checkout@v4
-      - run: chmod +x install.sh convert.sh
-      - run: ./install.sh
+      - uses: actions/checkout@v7
+      - id: cache-bin
+        uses: actions/cache@v6
+        with:
+          path: bin
+          key: bin-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('install.sh') }}
+      - if: steps.cache-bin.outputs.cache-hit != 'true'
+        run: ./install.sh
       - run: ./convert.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: transformed.nt
           path: output/transformed.nt

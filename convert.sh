@@ -1,4 +1,5 @@
 #!/bin/sh
+set -eu
 
 DUCKDB_BIN="${DUCKDB_BIN:-./bin/duckdb/duckdb}"
 ONTOP_BIN="${ONTOP_BIN:-./bin/ontop/ontop}"
