@@ -14,6 +14,8 @@ Make sure to commit the `input`, `mappings` and `src-gen` directories. The GitHu
 
 See [Further reading](#further-reading) for more information about the XRM mapping language.
 
+Working with a coding agent? [AGENTS.md](AGENTS.md) describes the pipeline, the files and how to validate changes.
+
 ## Install
 
 Download DuckDB CLI, DuckDB JDBC Driver, Ontop CLI and the [XRM CLI](https://github.com/zazuko/xrm) - and unpack into *bin* folder (requires Java 11+ and Node.js):
