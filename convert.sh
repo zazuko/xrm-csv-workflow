@@ -10,4 +10,6 @@ export ONTOP_BIN
 npm install
 npm run db:create
 npm run xrm:sources
+npm run xrm:generate
 npm run rdf:create
+npm run rdf:validate

@@ -10,13 +10,15 @@ This repository provides a performant way to convert CSV files to RDF. It contai
 This is a GitHub template repository. It will not be declared as "fork" once you click on the `Use this template` button above. Simply do that, start adding your data sources and adjust the XRM mapping accordingly.
 
 
-Make sure to commit the `input`, `mappings` and `src-gen` directories if you want to build it using GitHub Actions.
+Make sure to commit the `input`, `mappings` and `src-gen` directories. The GitHub Action regenerates `src-gen` from the XRM files and fails if the committed version is out of date.
 
 See [Further reading](#further-reading) for more information about the XRM mapping language.
 
+Working with a coding agent? [AGENTS.md](AGENTS.md) describes the pipeline, the files and how to validate changes.
+
 ## Install
 
-Download DuckDB CLI, DuckDB JDBC Driver, Ontop CLI - and unpack into *bin* folder:
+Download DuckDB CLI, DuckDB JDBC Driver, Ontop CLI and the [XRM CLI](https://github.com/zazuko/xrm) - and unpack into *bin* folder (requires Java 11+ and Node.js):
 
 ```
 $ ./install.sh
@@ -42,22 +44,32 @@ $ npm run xrm:bootstrap
 ```
 > `xrm:bootstrap` generates a scaffold based on your DB schema. It picks the first column of each table as the subject URI key — review and adjust the generated mappings before using them.
 5. Create/adjust the XRM files in the `mappings` directory.
-6. Materialize `transformed.nt` in the `output` directory:
+6. Validate the XRM files and generate the R2RML mapping in `src-gen`:
+```
+$ npm run xrm:generate
+```
+> Errors are reported as `file:line:column: severity: message`.
+7. Materialize `transformed.nt` in the `output` directory:
 
 ```
 $ npm run rdf:create
 ```
+8. Optionally check the classes and properties used in the output against well-known vocabularies (schema.org, FOAF, RDFS, …) with [rvv](https://github.com/ktk/vocab-validator). The step is skipped if `rvv` is not installed:
+```
+$ npm run rdf:validate
+```
+> Typos in known vocabularies (e.g. `schema:naem`) fail the step; terms from vocabularies `rvv` doesn't know, like the `example.com` one in this template, are only listed. Run `rvv update-vocabs` once after installing, otherwise every term is reported as unknown and nothing fails.
 
 ## Develop
-Each time you change the CSV files or the corresponding definitions (in `load-csv.sql`), you need to recreate the DuckDB database (with `npm run db:create`) and refresh the XRM sources (with `npm run xrm:sources`). 
+Each time you change the CSV files or the corresponding definitions (in `load-csv.sql`), you need to recreate the DuckDB database (with `npm run db:create`) and refresh the XRM sources (with `npm run xrm:sources`). After changing XRM files, regenerate the R2RML mapping with `npm run xrm:generate`; `./convert.sh` runs all of these steps.
 XRM will warn you about any source field used in the mappings that is no more available.
 
 
 ## Hints
 
 * Table names in DuckDB need to be lowercase, otherwise `ontop materialize` throws exceptions
-* Override binary paths via env vars: `DUCKDB_BIN` and `ONTOP_BIN` (default to `./bin/duckdb/duckdb` and `./bin/ontop/ontop`, both in `convert.sh` and the npm scripts)
-* Tool versions are pinned at the top of `install.sh`; the CI cache for `bin/` is invalidated whenever that file changes
+* Override binary paths via env vars: `DUCKDB_BIN`, `ONTOP_BIN` and `XRM_CLI_JAR` (default to `./bin/duckdb/duckdb`, `./bin/ontop/ontop` and `./bin/xrm/xrm-cli.jar`), and `RVV_BIN` (default: `rvv` on the `PATH`)
+* Tool versions are pinned at the top of `install.sh`; the CI cache for `bin/` is invalidated whenever that file or the published XRM CLI jar changes
 
 ## Other template repositories
 
