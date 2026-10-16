@@ -4,6 +4,8 @@ set -eu
 DUCKDB_VERSION="1.5.6"
 DUCKDB_JDBC_VERSION="1.5.6.0"
 ONTOP_VERSION="5.5.0"
+# release tag of https://github.com/zazuko/xrm (e.g. a version, or <branch>-snapshot)
+XRM_CLI_VERSION="cli-snapshot"
 
 OS=$(uname -s)
 ARCH=$(uname -m)
@@ -26,6 +28,7 @@ echo "Detected platform: $OS/$ARCH (duckdb: $DUCKDB_PLATFORM)"
 DUCKDB_ZIPFILE_URL="https://github.com/duckdb/duckdb/releases/download/v${DUCKDB_VERSION}/duckdb_cli-${DUCKDB_PLATFORM}.zip"
 DUCKDB_JDBC_JARFILE_URL="https://repo1.maven.org/maven2/org/duckdb/duckdb_jdbc/${DUCKDB_JDBC_VERSION}/duckdb_jdbc-${DUCKDB_JDBC_VERSION}.jar"
 ONTOP_ZIPFILE_URL="https://github.com/ontop/ontop/releases/download/ontop-${ONTOP_VERSION}/ontop-cli-${ONTOP_VERSION}.zip"
+XRM_CLI_JARFILE_URL="https://github.com/zazuko/xrm/releases/download/${XRM_CLI_VERSION}/xrm-cli.jar"
 
 mkdir -p bin/duckdb
 curl -fL $DUCKDB_ZIPFILE_URL -o duckdb_cli.zip
@@ -42,5 +45,8 @@ mkdir -p bin/ontop/jdbc
 curl -fL $DUCKDB_JDBC_JARFILE_URL -o duckdb_jdbc.jar
 mv duckdb_jdbc.jar bin/ontop/jdbc/
 
+mkdir -p bin/xrm
+curl -fL $XRM_CLI_JARFILE_URL -o bin/xrm/xrm-cli.jar
+
 echo ""
-echo "Done. Binaries installed to bin/duckdb and bin/ontop."
+echo "Done. Binaries installed to bin/duckdb, bin/ontop and bin/xrm."
