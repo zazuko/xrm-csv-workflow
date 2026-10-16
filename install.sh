@@ -1,4 +1,5 @@
 #!/bin/sh
+set -eu
 
 DUCKDB_VERSION="1.4.4"
 DUCKDB_JDBC_VERSION="1.4.4.0"
@@ -27,24 +28,19 @@ DUCKDB_JDBC_JARFILE_URL="https://repo1.maven.org/maven2/org/duckdb/duckdb_jdbc/$
 ONTOP_ZIPFILE_URL="https://github.com/ontop/ontop/releases/download/ontop-${ONTOP_VERSION}/ontop-cli-${ONTOP_VERSION}.zip"
 
 mkdir -p bin/duckdb
-curl -L $DUCKDB_ZIPFILE_URL -o duckdb_cli.zip
+curl -fL $DUCKDB_ZIPFILE_URL -o duckdb_cli.zip
 unzip -o duckdb_cli.zip -d bin/duckdb
 rm duckdb_cli.zip
 
-if [ -d bin/ontop ]; then
-  rm -rf bin/ontop
-fi
+rm -rf bin/ontop
 mkdir -p bin/ontop
-curl -L $ONTOP_ZIPFILE_URL -o ontop_cli.zip
+curl -fL $ONTOP_ZIPFILE_URL -o ontop_cli.zip
 unzip -o ontop_cli.zip -d bin/ontop
 rm ontop_cli.zip
 
 mkdir -p bin/ontop/jdbc
-curl -L $DUCKDB_JDBC_JARFILE_URL -o duckdb_jdbc.jar
+curl -fL $DUCKDB_JDBC_JARFILE_URL -o duckdb_jdbc.jar
 mv duckdb_jdbc.jar bin/ontop/jdbc/
 
-export DUCKDB_BIN="$(pwd)/bin/duckdb/duckdb"
-export ONTOP_BIN="$(pwd)/bin/ontop/ontop"
 echo ""
-echo "Done. To use the binaries directly in your shell, source this script:"
-echo "  source ./install.sh"
+echo "Done. Binaries installed to bin/duckdb and bin/ontop."
