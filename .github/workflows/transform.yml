@@ -7,14 +7,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      # snapshot releases of xrm-cli are replaced in place, so key the cache on the jar's digest too
+      - id: xrm-cli
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(sed -n 's/^XRM_CLI_VERSION="\(.*\)"/\1/p' install.sh)
+          digest=$(gh release view "$tag" -R zazuko/xrm --json assets -q '.assets[] | select(.name == "xrm-cli.jar") | .digest')
+          echo "digest=$digest" >> "$GITHUB_OUTPUT"
       - id: cache-bin
         uses: actions/cache@v6
         with:
           path: bin
-          key: bin-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('install.sh') }}
+          key: bin-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('install.sh') }}-${{ steps.xrm-cli.outputs.digest }}
       - if: steps.cache-bin.outputs.cache-hit != 'true'
         run: ./install.sh
       - run: ./convert.sh
+      - name: Check committed src-gen is up to date
+        run: git diff --exit-code src-gen
       - uses: actions/upload-artifact@v7
         with:
           name: transformed.nt
